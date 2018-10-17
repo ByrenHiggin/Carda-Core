@@ -1,0 +1,8 @@
+#Ignore API key storage file
+*.env
+#ignore all node modules
+**/node_modules
+#ignore resource directory
+res/
+#ignore all logs
+*.log
