@@ -7,8 +7,9 @@
     "lib": "lib"
   },
   "scripts": {
-    "start": "nodemon -r dotenv/config server.js",
-    "test": "test.js"
+    "dev":"nodemon -r dotenv/config server.js",
+    "build": "nodemon -r dotenv/config server.js",
+    "start": "next build"
   },
   "keywords": [
     "Case",
@@ -27,6 +28,9 @@
     "express": "^4.16.4",
     "mongodb": "^3.1.8",
     "mongoose": "^5.3.3",
+    "next": "^7.0.2",
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2",
     "winston": "^3.1.0"
   },
   "devDependencies": {
@@ -34,5 +38,12 @@
     "mocha": "^5.2.0",
     "should": "^13.2.3",
     "sinon": "^7.0.0"
+  },
+  "nodemonConfig":
+  {
+    "verbose": true,
+    "ignore": ["node_modules", ".next"],
+    "watch": ["server/**/*", "server.js"],
+    "ext": "js json"
   }
 }

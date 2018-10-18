@@ -15,4 +15,19 @@ module.exports = function(app) {
         .get(todoList.read_a_task)
         .put(todoList.update_a_task)
         .delete(todoList.delete_a_task);
+    
+    /*
+        ==== Case Routing ====
+    */
+    var caselist = require('../case/controllers/caseController');
+
+    // todoList Routes
+    app.route('/case')
+        .get(caselist.get_cases)
+        .post(caselist.put_case);
+
+    app.route('/case/:caseId')
+        .get(caselist.get_case)
+        .put(caselist.post_case)
+        .delete(caselist.delete_case);
 };
