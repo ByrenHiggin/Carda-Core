@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 
 var CaseSchema = new Schema({
   CaseNumber: {
-    type: mongoose.Schema.Types.ObjectId, index:true
+    type: String
   },
   Created_date: {
     type: Date,
@@ -13,7 +13,7 @@ var CaseSchema = new Schema({
   status: {
     type: [{
       type: String,
-      enum: ['pending', 'ongoing', 'completed']
+      enum: ['pending', 'ongoing', 'resolved', 'archived']
     }],
     default: ['pending']
   }

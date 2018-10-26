@@ -3,52 +3,43 @@ var mongoose = require('mongoose'),
 Case = mongoose.model('Cases');
 
 exports.get_cases = function(req, res) {
-  Case.find({}, function(err, task) {
+  Case.find({}, function(err, Case) {
     if (err)
       res.send(err);
-    res.json(task);
+    res.json(Case);
   });
 };
 
-exports.put_case = function(req, res) {
-    var new_case = new Case(req.body);
-    new_case.save(function(err, task) {
+exports.post_case = function(req, res) {
+    var new_Case = new Case(req.body);
+    new_Case.caseNumber = "CA-" + Math.random().toString(36).substr(2, 9) + "-" + new Date().getTime();
+    new_Case.save(function(err, Case) {
     if (err)
       res.send(err);
-    res.json(task);
+    res.json(Case);
     });
 };
 
 exports.get_case = function(req, res) {
-    if(req.params.CaseID === "")
-        {
-            Case.findOne({CaseNumber: req.params.CaseId}, function(err, task) {
-                if (err)
-                    res.send(err);
-                res.json(task);
-            });
-        } else {
-            Case.findOne({_id: req.params.CaseId}, function(err, task) {
-                if (err)
-                    res.send(err);
-                res.json(task);
-            });
-        }
-        
+    Case.findOne({CaseNumber: req.params.casenumber}, function(err, Case) {
+        if (err)
+            res.send(err);
+        res.json(Case);
+    });
 };
 
-exports.post_case = function(req, res) {
-  Case.findOneAndUpdate({_id: req.params.CaseId}, req.body, {new: true}, function(err, task) {
+exports.put_case = function(req, res) {
+  Case.findOneAndUpdate({CaseNumber: req.params.casenumber}, req.body, {new: true}, function(err, Case) {
     if (err)
       res.send(err);
-    res.json(task);
+    res.json(Case);
   });
 };
 
 exports.delete_case = function(req, res) {
   Case.remove({
-    _id: req.params.CaseId
-  }, function(err, task) {
+    CaseNumber: req.params.casenumber
+  }, function(err, Case) {
     if (err)
       res.send(err);
     res.json({ message: 'Case successfully deleted' });

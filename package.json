@@ -7,7 +7,7 @@
     "lib": "lib"
   },
   "scripts": {
-    "dev":"nodemon -r dotenv/config server.js",
+    "dev": "nodemon -r dotenv/config server.js",
     "build": "nodemon -r dotenv/config server.js",
     "start": "next build"
   },
@@ -26,6 +26,8 @@
     "body-parser": "^1.18.3",
     "dotenv": "^6.1.0",
     "express": "^4.16.4",
+    "gulp-cli": "^2.0.1",
+    "isomorphic-unfetch": "^3.0.0",
     "mongodb": "^3.1.8",
     "mongoose": "^5.3.3",
     "next": "^7.0.2",
@@ -39,11 +41,14 @@
     "should": "^13.2.3",
     "sinon": "^7.0.0"
   },
-  "nodemonConfig":
-  {
+  "nodemonConfig": {
     "verbose": true,
-    "ignore": ["node_modules", ".next"],
-    "watch": ["server/**/*", "server.js"],
-    "ext": "js json"
+    "ignore": [
+      "node_modules",
+      ".next",
+      "pages",
+      "controllers"
+    ],
+    "ext": "js json jsx"
   }
 }

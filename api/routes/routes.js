@@ -1,33 +1,62 @@
 'use strict';
-module.exports = function(app) {
-  
-    /*
-        ==== Task Routing ====
-    */
-    var todoList = require('../tasks/controllers/taskController');
+/*
+    ==== User Routing ====
+*/
+//Set up the mongodb model then set up the Controller
+var UserRoutingTable = (app) => {
+    const User = require('../user/models/userModel');
+    const userlist = require('../user/controllers/userController');
 
-    // todoList Routes
-    app.route('/tasks')
-        .get(todoList.list_all_tasks)
-        .post(todoList.create_a_task);
+    app.route('/users')
+        .get(userlist.get_users)
+        .post(userlist.post_user);
 
-    app.route('/tasks/:taskId')
-        .get(todoList.read_a_task)
-        .put(todoList.update_a_task)
-        .delete(todoList.delete_a_task);
-    
-    /*
-        ==== Case Routing ====
-    */
-    var caselist = require('../case/controllers/caseController');
+    app.route('/users/:UserId')
+        .get(userlist.get_user)
+        .put(userlist.put_user)
+        .delete(userlist.delete_user);
+};
 
-    // todoList Routes
+/*
+==== Case Routing ====
+*/
+//Set up the mongodb model then set up the Controller
+var CaseRoutingTable = (app) => {
+    const Case = require('../case/models/caseModel');
+    const caselist = require('../case/controllers/caseController');
+
     app.route('/case')
         .get(caselist.get_cases)
-        .post(caselist.put_case);
-
-    app.route('/case/:caseId')
+        .post(caselist.post_case);
+    
+    app.route('/case/:casenumber')
         .get(caselist.get_case)
-        .put(caselist.post_case)
+        .put(caselist.put_case)
         .delete(caselist.delete_case);
-};
+}
+
+/*
+==== Comment Routing ====
+*/
+//Set up the mongodb model then set up the Controller
+var CommentRoutingTable = (app) => {
+    const Comment = require('../comment/models/commentModel');
+    const commentlist = require('../comment/controllers/commentController');
+    
+    app.route('/comment/:casenumber')
+        .get(commentlist.get_comments)
+        .post(commentlist.post_comment);
+
+    app.route('/case/:casenumber/:commentid')
+        .get(commentlist.get_comment)
+        .put(commentlist.put_comment)
+        .delete(commentlist.delete_comment);
+}
+
+var apiRoutingTable = (app) => {
+    UserRoutingTable(app);
+    CaseRoutingTable(app);
+    CommentRoutingTable(app);
+}
+
+module.exports = apiRoutingTable
