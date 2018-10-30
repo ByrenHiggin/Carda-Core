@@ -10,6 +10,7 @@ var CaseSchema = new Schema({
     type: Date,
     default: Date.now
   },
+  user: [Schema.Types.ObjectId],
   status: {
     type: [{
       type: String,

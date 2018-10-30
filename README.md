@@ -11,6 +11,23 @@ The idea of the core software is to introduce an open source software that peopl
 
 modules built on top of the core software may provide licencing and monetisation agreements however.
 
+##How to use
+
+Currently the method of authentication is by posting a new user object to 
+
+/users/
+
+with the following format
+
+{
+  "user": {
+    "email": emailString,
+    "password": passwordString
+  }
+}
+
+which will return a object containing the new identity, and a login token 
+
 ##Timeline
 
 The current timeline for development is as follows

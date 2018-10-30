@@ -15,6 +15,9 @@ const Header = () => (
         <Link href="/case">
           <a style={linkStyle}>View Case</a>
         </Link>
+        <Link href="/user">
+          <a style={linkStyle}>View Users</a>
+        </Link>
     </div>
 )
 

@@ -2,12 +2,12 @@
 var mongoose = require('mongoose');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 var Schema = mongoose.Schema;
 
-var UserSchema = new Schema({
+var AuthSchema = new Schema({
     email: String,
-    hash: String,
-    salt: String,
+    pwhash: String,
     /*name: {
         type: String,
         required: 'User name is required'
@@ -33,17 +33,28 @@ var UserSchema = new Schema({
     }
 });
 
-UserSchema.methods.setPassword = function(password) {
-  this.salt = crypto.randomBytes(16).toString('hex');
-  this.hash = crypto.pbkdf2Sync(password, this.salt, 10000, 512, 'sha512').toString('hex');
+AuthSchema.methods.setPassword = async function(password) {
+    console.log("Setting Password", password)
+    let promise = new Promise((resolve, reject) => {
+        bcrypt.hash(password,10000,(err,hash) => {
+            if (err) {reject(err)};
+            resolve(hash) 
+        });  
+    }).catch((err) => {throw err});
+    this.pwhash = await promise
 };
 
-UserSchema.methods.validatePassword = function(password) {
-  const hash = crypto.pbkdf2Sync(password, this.salt, 10000, 512, 'sha512').toString('hex');
-  return this.hash === hash;
+AuthSchema.methods.validatePassword = async function(password) {
+    var pwash = this.pwhash
+    var promise = new Promise(function(resolve, reject) {
+        bcrypt.compare(password, pwash).then((res) => {
+            resolve(res)
+        });
+    })
+    return promise;
 };
 
-UserSchema.methods.generateJWT = function() {
+AuthSchema.methods.generateJWT = function() {
   const today = new Date();
   const expirationDate = new Date(today);
   expirationDate.setDate(today.getDate() + 60);
@@ -55,7 +66,7 @@ UserSchema.methods.generateJWT = function() {
   }, 'secret');
 }
 
-UserSchema.methods.toAuthJSON = function() {
+AuthSchema.methods.toAuthJSON = function() {
   return {
     _id: this._id,
     email: this.email,
@@ -64,4 +75,4 @@ UserSchema.methods.toAuthJSON = function() {
 };
 
 
-module.exports = mongoose.model('Client', UserSchema);
+module.exports = mongoose.model('Auth', AuthSchema);

@@ -26,4 +26,4 @@ exports.start = () => {
     console.log('RESTful API server started on: ' + port);
     
     app.listen(port);
-};;
+};

@@ -1,17 +1,33 @@
-import {withRouter} from 'next/router'
-import Layout from '../components/_layout.js'
+import Link from 'next/link'
+import Layout from '../components/_layout'
+import fetch from 'isomorphic-unfetch'
 
-const Content = withRouter((props) => (
-  <div>
-    <h1>{props.router.query.title}</h1>
-    <p>User Page</p>
-  </div>
-))
-
-const Page = (props) => (
+const Index = (props) => (
     <Layout>
-       <Content />
+       <p>View case details here</p>
+        {props.case.map((item) => (
+            <li key={item.CaseNumber}>
+              <Link as={`/c/${item.CaseNumber}`} href={`/case_item?casenumber=${item.CaseNumber}`}>
+                <a>{item.CaseNumber}</a>
+              </Link>
+            </li>
+          ))}
     </Layout>
 )
 
-export default Page
+Index.getInitialProps = async function() {
+  const res = await fetch('http://localhost:8081/user')
+  const data = await res.json()
+
+  console.log(`Show data fetched. Count: ${data.length}`)
+  var l =  {
+    case: data
+  }
+  l.case.map((item) => {
+      console.log(item)
+  })
+  
+  return l
+}
+
+export default Index

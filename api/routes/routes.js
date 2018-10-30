@@ -1,4 +1,5 @@
 'use strict';
+const auth = require('../../auth');
 /*
     ==== User Routing ====
 */
@@ -8,13 +9,13 @@ var UserRoutingTable = (app) => {
     const userlist = require('../user/controllers/userController');
 
     app.route('/users')
-        .get(userlist.get_users)
-        .post(userlist.post_user);
+        .get(auth.flags.required, userlist.get_users)
+        .post(auth.flags.required, userlist.post_user);
 
     app.route('/users/:UserId')
-        .get(userlist.get_user)
-        .put(userlist.put_user)
-        .delete(userlist.delete_user);
+        .get(auth.flags.required, userlist.get_user)
+        .put(auth.flags.required, userlist.put_user)
+        .delete(auth.flags.required, userlist.delete_user);
 };
 
 /*
@@ -26,6 +27,9 @@ var CaseRoutingTable = (app) => {
     const caselist = require('../case/controllers/caseController');
 
     app.route('/case')
+        .all(function(req,res,next){
+            next();
+        })
         .get(caselist.get_cases)
         .post(caselist.post_case);
     
